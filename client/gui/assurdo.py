@@ -4,9 +4,11 @@ from PIL import Image
 import time
 import threading
 import os
+from client.core.speech_to_text import transcribe_audio
+
+
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("dark-blue")
-
 
 
 
@@ -91,9 +93,10 @@ class RoboPYApp(ctk.CTk):
         self.messages_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         self.messages_frame.grid_columnconfigure(0, weight=1)
         
-        # Message counter used to track position of message in the CTkScrollableFrame.
+        # Message counter used to track position of message in the Scroll.
         self.message_counter = 0
         
+        self.pressed = False
         self.entry_frame = ctk.CTkFrame(self.console_frame, fg_color="#1E1E1E", corner_radius=0)
         self.entry_frame.grid(row=1, column=0, sticky="sew", padx=30, pady=5)
         self.entry_frame.grid_columnconfigure(0, weight=1)
@@ -124,15 +127,26 @@ class RoboPYApp(ctk.CTk):
             self.entry_frame,
             text="",
             width=40, height=20,
-            image=second_image
+            image=second_image,
+            command=self.on_button_pressed
         )
         self.register_button.grid(row=2, column=1, stick="s")
         
         self.animation_in_progress = False
         self.animation_thread = None
 
+    def on_button_pressed(self):
+        self.pressed = True
+        self.send_message()
+        time.sleep(0.02)
+        self.pressed = False
+
+
     def send_message(self, event=None):
-        msg = self.input_entry.get().strip()
+        if self.pressed:
+            msg = transcribe_audio()
+        else:
+            msg = self.input_entry.get().strip()
         if not msg:
             return
             
