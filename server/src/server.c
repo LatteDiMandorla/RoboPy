@@ -5,15 +5,24 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
+#define PORT 12345
+#define BUFFER_SIZE 1024
+
+
 int main() {
-    // Crea il socket
+
+    /* Creation of an endpoint of comunication,
+     * AF_INET is for IPv4, SOCK_STREAM is 
+     * for the socket type, 0 is a standard protocol number for
+     * TCP.                                                       */
+    
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket == -1) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
 
-    // Configura l'indirizzo del server
+    /* Creation of server address. */
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(8080); // Porta

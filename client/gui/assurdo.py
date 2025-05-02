@@ -141,15 +141,19 @@ class RoboPYApp(ctk.CTk):
         time.sleep(0.02)
         self.pressed = False
 
-
+    
     def send_message(self, event=None):
         if self.pressed:
             msg = transcribe_audio()
         else:
             msg = self.input_entry.get().strip()
+
+
         if not msg:
             return
-            
+        
+        # This part of the function is only to animate the answer.
+        # Maybe worth moving this.
         self.add_message(msg, is_user=True)
         
         response = self.generate_response(msg)
