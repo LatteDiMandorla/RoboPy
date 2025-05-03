@@ -23,11 +23,12 @@ int main() {
     }
 
     /* Creation of server address. */
+
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(8080); // Porta
+    server_address.sin_port = htons(PORT);
     server_address.sin_addr.s_addr = INADDR_ANY;
-    memset(server_address.sin_zero, 0, sizeof(server_address.sin_zero)); // Pulizia del padding
+    memset(server_address.sin_zero, 0, sizeof(server_address.sin_zero)); 
 
     // Associa il socket all'indirizzo
     int bind_status = bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
@@ -55,7 +56,7 @@ int main() {
     }
 
     // Comunica con il client
-    char buffer[1024];
+    char buffer[BUFFER_SIZE];
     int recv_status = recv(client_socket, buffer, sizeof(buffer), 0);
     if (recv_status == -1) {
         perror("Receive failed");
