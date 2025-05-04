@@ -51,7 +51,7 @@ int main() {
        struct sockaddr_in client_address;
        socklen_t client_address_len = sizeof(client_address);
        
-       int client_scoket = accept(server_socket, (struct sockaddr *)& client_address, &client_address_len);
+       int client_socket = accept(server_socket, (struct sockaddr *)& client_address, &client_address_len);
        if (client_socket == -1)
        {
           perror("Accept failed!");
@@ -70,7 +70,7 @@ int main() {
        
        char buffer[BUFFER_SIZE];
 
-       int recv_status = recv(client_scoket, buffer, sizeof(buffer) - 1, 0);
+       int recv_status = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
        if (recv_status > 0)
        {
           buffer[recv_status] = '\0';
