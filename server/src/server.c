@@ -5,8 +5,9 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-#define PORT 12345
+#define PORT 8080
 #define BUFFER_SIZE 1024
+int server_socket;
 
 
 int main() {
@@ -16,7 +17,7 @@ int main() {
      * for the socket type, 0 is a standard protocol number for
      * TCP.                                                       */
     
-    int server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket == -1) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
@@ -74,8 +75,7 @@ int main() {
        if (recv_status > 0)
        {
           buffer[recv_status] = '\0';
-          
-
+          printf("Messaggio ricevuto da %s: %s\n", client_ip, buffer);
        }
 
        close(client_socket);
