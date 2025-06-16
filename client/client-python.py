@@ -17,8 +17,7 @@ def SendJsonToServer(json_data):
 
     try:
         # Invia un messaggio al server
-        messaggio = f"Questo è il risultato del test Tipi: {json_data}"
-        client_socket.sendall(messaggio.encode('utf-8'))
+        client_socket.sendall(json_data.encode('utf-8'))
 
         # Ricevi la risposta dal server
         response = client_socket.recv(1024)

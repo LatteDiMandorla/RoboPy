@@ -4,11 +4,15 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <stdbool.h>
+#include "personality_picker.h"
 
 #define PORT 8080
 #define BUFFER_SIZE 1024
 int server_socket;
 
+
+bool personality_checked = false;
 
 int main() {
 
@@ -76,6 +80,16 @@ int main() {
        {
           buffer[recv_status] = '\0';
           printf("Messaggio ricevuto da %s: %s\n", client_ip, buffer);
+          
+
+          if ( personality_checked == false ) {
+            parse_jSON(buffer);
+            personality_checked = true;
+          }
+          else {
+            
+            handle_message();
+          }
        }
 
        close(client_socket);

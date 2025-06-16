@@ -3,9 +3,9 @@
 
 #include <cjson/cJSON.h>
 
-void create_prompt(char * text);
+void create_prompt(const char * text);
 
-void parse_jSON(int client_socket, char buffer[]);
+void parse_jSON(const char * buffer);
 
 void decide_personality(const cJSON * first_value, 
                         const cJSON * second_value, 

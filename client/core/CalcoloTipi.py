@@ -11,4 +11,4 @@ def calcola_tipi(risposte):
     return tipi
 
 def ConvertDictionaryToJson(risposte):
-    return json.dumps(calcola_tipi(risposte))
+    return json.dumps(calcola_tipi(risposte), ensure_ascii=False)

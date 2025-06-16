@@ -4,6 +4,22 @@
 #include <string.h>
 #include <cjson/cJSON.h>
 #include <stdbool.h>
+#include <unistd.h>
+
+
+const char * prompt = "Rispondi solo contestualmente alla conversazione dell'utente, tenendo in conto che l'utente è:\n";
+
+void init_prompt() { 
+  FILE * file = fopen("../prompt/prompt.txt", "w");
+  if (file == NULL) {
+    fprintf(stderr, "Error opening file!\n");
+    return;
+  }
+
+  fprintf(file, prompt);
+  fclose(file);
+}
+
 
 
 void create_prompt(const char * text){
@@ -22,7 +38,7 @@ void create_prompt(const char * text){
 /* Parsing the jSON file sent by the client, in order to 
  * decide which personality has the user, and behave conseguentally. */ 
 
-void parse_jSON(int client_socket, char buffer[]){
+void parse_jSON(const char * buffer){
   const cJSON * extraversion      = NULL;
   const cJSON * agreeableness     = NULL;
   const cJSON * conscientiousness = NULL;
@@ -34,8 +50,7 @@ void parse_jSON(int client_socket, char buffer[]){
   
   if (json == NULL) {
     fprintf(stderr, "Error into jSON parsing\n");
-    cJSON_Delete(json)
-    close(client_socket);
+    cJSON_Delete(json);
     return;
   }
 
@@ -50,11 +65,14 @@ void parse_jSON(int client_socket, char buffer[]){
       !cJSON_IsNumber(conscientiousness) ||
       !cJSON_IsNumber(stability)         ||
       !cJSON_IsNumber(openness))          {
-
+    
+    cJSON_Delete(json);
     fprintf(stderr, "Some data is invalid\n");
     return;
 
   }
+
+  decide_personality(extraversion, agreeableness, conscientiousness, stability, openness);
 
 }
 
@@ -70,6 +88,9 @@ void decide_personality(const cJSON * first_value,
   int conc_value = third_value->valueint;
   int stab_value = fourth_value->valueint;
   int open_value = fifth_value->valueint;
+
+
+  init_prompt();
 
   /* If the score is a number between 2 and 14, we can say that 8 is minimum number
    * to consider the user positive. The function write an important information about 
@@ -91,5 +112,4 @@ void decide_personality(const cJSON * first_value,
   else                 { create_prompt("\n-Chiuso di mente\n"); }
 
 }
-
 
