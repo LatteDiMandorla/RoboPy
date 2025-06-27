@@ -85,6 +85,7 @@ int main() {
           if ( personality_checked == false ) {
             parse_jSON(buffer);
             personality_checked = true;
+            behave();
           }
           else {
             
