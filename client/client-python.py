@@ -2,6 +2,21 @@ import socket
 from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
 
+
+def recive_from_server(): 
+    with socket.socket(socket.AF_INET, socket.STREAM) as s:
+        s.connect((SERVER_IP, PORT))
+
+
+        response = s.recv(BUFFER_SIZE)
+        json_str = response.decode('utf-8')
+        data = json.loads(json_str)
+
+        prompt_base = data["prompt base"]
+        traits = data["personalità"]
+
+        return prompt_base, traits
+
 def ClientCreationSocket():
     # Crea il socket del client
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
