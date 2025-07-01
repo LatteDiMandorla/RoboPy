@@ -83,13 +83,16 @@ int main() {
           
 
           if ( personality_checked == false ) {
-            parse_jSON(buffer);
-            personality_checked = true;
-            behave();
-          }
-          else {
-            
-            handle_message();
+            char * response = parse_jSON(buffer);
+            if (response != NULL) {
+              send(client_socket, response, strlen(response), 0);
+              free(response);
+              personality_checked = true;
+            }
+            else {
+              const char  * error_msg = "{\"error\": \"Parsing fallito\"}";
+              send(client_socket, error_msg, strlen(error_msg), 0);
+            }
           }
        }
 

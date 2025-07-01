@@ -9,36 +9,10 @@
 
 const char * prompt = "Rispondi solo contestualmente alla conversazione dell'utente, tenendo in conto che l'utente è:\n";
 
-void init_prompt() { 
-  FILE * file = fopen("../prompt/prompt.txt", "w");
-  if (file == NULL) {
-    fprintf(stderr, "Error opening file!\n");
-    return;
-  }
-
-  fprintf(file, prompt);
-  fclose(file);
-}
-
-
-
-void create_prompt(const char * text){
-  FILE * file = fopen("../prompt/prompt.txt", "a");
-
-  if (file == NULL) { 
-    fprintf(stderr, "Error opening file!\n");
-    return;
-  }
-
-  fprintf(file, "%s", text);
-  fclose(file);
-
-}
-
 /* Parsing the jSON file sent by the client, in order to 
  * decide which personality has the user, and behave conseguentally. */ 
 
-void parse_jSON(const char * buffer){
+char * parse_jSON(const char * buffer){
   const cJSON * extraversion      = NULL;
   const cJSON * agreeableness     = NULL;
   const cJSON * conscientiousness = NULL;
@@ -51,7 +25,7 @@ void parse_jSON(const char * buffer){
   if (json == NULL) {
     fprintf(stderr, "Error into jSON parsing\n");
     cJSON_Delete(json);
-    return;
+    return NULL;
   }
 
   extraversion      = cJSON_GetObjectItemCaseSensitive(json, "Estroversione");
@@ -68,16 +42,25 @@ void parse_jSON(const char * buffer){
     
     cJSON_Delete(json);
     fprintf(stderr, "Some data is invalid\n");
-    return;
+    return NULL;
 
   }
 
-  decide_personality(extraversion, agreeableness, conscientiousness, stability, openness);
+  cJSON * traits = decide_personality(extraversion, agreeableness, conscientiousness, stability, openness);
+  cJSON * response = cJSON_CreateObject();
 
+  cJSON_AddStringToObject(response, "prompt base", "Rispondi solo contestualmente alla conversazione dell'utente, tenendo in conto che l'utente è:\n");
+  cJSON_AddItemToObject(response, "personalità", traits);
+
+  char * response_string = cJSON_PrintUnformatted(response);
+  cJSON_Delete(response);
+  cJSON_Delete(json);
+
+  return response_string;
 }
 
 
-void decide_personality(const cJSON * first_value, 
+cJSON * decide_personality(const cJSON * first_value, 
                         const cJSON * second_value, 
                         const cJSON * third_value, 
                         const cJSON * fourth_value,
@@ -90,26 +73,26 @@ void decide_personality(const cJSON * first_value,
   int open_value = fifth_value->valueint;
 
 
-  init_prompt();
+  cJSON * traits = cJSON_CreateArray();
 
   /* If the score is a number between 2 and 14, we can say that 8 is minimum number
    * to consider the user positive. The function write an important information about 
    * the personality into a prompt.txt and store it. */ 
 
-  if (extr_value >= 8) { create_prompt("\n-Estroverso\n");      }
-  else                 { create_prompt("\n-Introverso\n");      }
+  if (extr_value >= 8) { cJSON_AddItemToArray(traits, cJSON_CreateString("Estroverso"));      }
+  else                 { cJSON_AddItemToArray(traits, cJSON_CreateString("Introverso"));      }
 
-  if (agre_value >= 8) { create_prompt("\n-Amichevole\n");      }
-  else                 { create_prompt("\n-Scontroso\n");       }
+  if (agre_value >= 8) { cJSON_AddItemToArray(traits, cJSON_CreateString("Amichevole"));      }
+  else                 { cJSON_AddItemToArray(traits, cJSON_CreateString("Scontroso"));       }
 
-  if (conc_value >= 8) { create_prompt("\n-Coscenzioso\n");     }
-  else                 { create_prompt("\n-Impulsivo\n");       }
+  if (conc_value >= 8) { cJSON_AddItemToArray(traits, cJSON_CreateString("Coscienzioso"));     }
+  else                 { cJSON_AddItemToArray(traits, cJSON_CreateString("Impulsivo"));       }
 
-  if (stab_value >= 8) { create_prompt("\n-Stabile\n");         }
-  else                 { create_prompt("\n-Instabile\n");       }
+  if (stab_value >= 8) { cJSON_AddItemToArray(traits, cJSON_CreateString("Stabile"));         }
+  else                 { cJSON_AddItemToArray(traits, cJSON_CreateString("Instabile"));       }
 
-  if (open_value >= 8) { create_prompt("\n-Aperto di mente\n"); }
-  else                 { create_prompt("\n-Chiuso di mente\n"); }
+  if (open_value >= 8) { cJSON_AddItemToArray(traits, cJSON_CreateString("Aperto di mente")); }
+  else                 { cJSON_AddItemToArray(traits, cJSON_CreateString("Chiuso di mente")); }
 
 }
 

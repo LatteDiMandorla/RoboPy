@@ -55,6 +55,8 @@ void send_gesture(const char* gesture_json) {
 
 
 int main() {
+
+    /* Considering to refactor this, and probably use docker network or give this responsability to client. */
     const char *furhat_ip = "192.168.1.20"; 
 
     send_gesture(introvert_gesture);
