@@ -75,13 +75,13 @@ int main() {
        
        char buffer[BUFFER_SIZE];
 
-       int recv_status = recv(client_socket, buffer, sizeof(buffer), 0);
+       int recv_status = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
        
        if (recv_status > 0)
        {
           buffer[recv_status] = '\0';
           printf("Messaggio ricevuto da %s: %s\n", client_ip, buffer);
-          printf("Prova Errore");
+          
           if ( personality_checked == false ) {
             char * response = parse_jSON(buffer);
             if (response != NULL) {
