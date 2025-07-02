@@ -19,13 +19,10 @@ char * parse_jSON(const char * buffer){
   const cJSON * stability         = NULL;
   const cJSON * openness          = NULL;
 
-
   cJSON * json = cJSON_Parse(buffer);
-  
   if (json == NULL) {
-    fprintf(stderr, "Error into jSON parsing\n");
-    cJSON_Delete(json);
-    return NULL;
+    fprintf(stderr, "Error into JSON parsing\n");
+    return NULL;  // non serve cJSON_Delete(json) se json è NULL
   }
 
   extraversion      = cJSON_GetObjectItemCaseSensitive(json, "Estroversione");
@@ -38,21 +35,32 @@ char * parse_jSON(const char * buffer){
       !cJSON_IsNumber(agreeableness)     ||
       !cJSON_IsNumber(conscientiousness) ||
       !cJSON_IsNumber(stability)         ||
-      !cJSON_IsNumber(openness))          {
-    
+      !cJSON_IsNumber(openness)) {
     cJSON_Delete(json);
     fprintf(stderr, "Some data is invalid\n");
     return NULL;
-
   }
 
   cJSON * traits = decide_personality(extraversion, agreeableness, conscientiousness, stability, openness);
   cJSON * response = cJSON_CreateObject();
+  if (response == NULL) {
+    cJSON_Delete(json);
+    if (traits) cJSON_Delete(traits);
+    fprintf(stderr, "Failed to create response object\n");
+    return NULL;
+  }
 
   cJSON_AddStringToObject(response, "prompt base", "Rispondi solo contestualmente alla conversazione dell'utente, tenendo in conto che l'utente è:\n");
-  cJSON_AddItemToObject(response, "personalità", traits);
+
+  if (traits != NULL) {
+    cJSON_AddItemToObject(response, "personalità", traits);
+    // ATTENZIONE: traits ora è "owned" da response, NON cancellarla dopo
+  } else {
+    cJSON_AddStringToObject(response, "error", "Decide personality failed");
+  }
 
   char * response_string = cJSON_PrintUnformatted(response);
+
   cJSON_Delete(response);
   cJSON_Delete(json);
 
@@ -93,6 +101,9 @@ cJSON * decide_personality(const cJSON * first_value,
 
   if (open_value >= 8) { cJSON_AddItemToArray(traits, cJSON_CreateString("Aperto di mente")); }
   else                 { cJSON_AddItemToArray(traits, cJSON_CreateString("Chiuso di mente")); }
+
+
+  return traits;
 
 }
 
