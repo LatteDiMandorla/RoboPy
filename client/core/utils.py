@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import socket
 import json
 
@@ -19,5 +18,3 @@ def receive_from_server():
         traits = data["personalita"]
 
         return prompt_base, traits
-=======
->>>>>>> 5887dbc (feat: add return type to decide_personality.)
