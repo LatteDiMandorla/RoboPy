@@ -1,5 +1,3 @@
-
-
 #ifndef HANDLE_CONVERSATION
 #define HANDLE_CONVERSATION
 #include <stdio.h>
