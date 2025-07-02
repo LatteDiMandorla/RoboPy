@@ -4,18 +4,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-openai.api_key = os.getenv("OPENAI_API_KEY");
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def ask_chatGPT(prompt, traits, user_message):
 
 
-    personality_description = "\n".join([f"- {k}: {v}" for k, v in traits.item()])
+    personality_description = "\n".join([f"- {k}: {v}" for k, v in traits.items()])
     full_prompt = f"{prompt}\n{personality_description}"
 
 
     messages = [
-        {"role": "system", "content" : prompt},
+        {"role": "system", "content" : full_prompt},
         {"role": "user", "content": user_message}
     ]
 
@@ -29,4 +29,4 @@ def ask_chatGPT(prompt, traits, user_message):
     
 
 
-    return response['choices'][0]['messages']['content']
+    return response['choices'][0]['message']['content']
