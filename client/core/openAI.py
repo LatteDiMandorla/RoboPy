@@ -10,8 +10,8 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def ask_chatGPT(prompt, traits, user_message):
 
 
-    personality_description = "\n".join([f"- {k}: {v}" for k, v in traits.items()])
-    full_prompt = f"{prompt}\n{personality_description}"
+
+    full_prompt = "\n".join(prompt + [f"- {trait}" for trait in traits])
 
 
     messages = [

@@ -83,6 +83,7 @@ def main():
     mostra_risultati(risposte)
     json_data = ConvertDictionaryToJson(risposte)
     SendJsonToServer(json_data)
+    prompt_base, traits = receive_from_server()
     
 if __name__ == "__main__":
     main()
