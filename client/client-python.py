@@ -7,8 +7,8 @@ BUFFER_SIZE = 4096
 SERVER_IP = "127.0.0.1"
 PORT = 8080
 
-def recive_from_server(): 
-    with socket.socket(socket.AF_INET, socket.STREAM) as s:
+def receive_from_server(): 
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((SERVER_IP, PORT))
 
 
@@ -42,6 +42,8 @@ def dispatch_traits(traits):
         function = traits_function_map.get(trait)
         if function: 
             function_to_execute.append(function)
+
+    return function_to_execute
 
 
 
