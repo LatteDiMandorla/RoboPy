@@ -3,6 +3,10 @@ from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
 
 
+BUFFER_SIZE = 4096
+SERVER_IP = "127.0.0.1"
+PORT = 8080
+
 def recive_from_server(): 
     with socket.socket(socket.AF_INET, socket.STREAM) as s:
         s.connect((SERVER_IP, PORT))
@@ -16,6 +20,35 @@ def recive_from_server():
         traits = data["personalità"]
 
         return prompt_base, traits
+
+
+traits_function_map = {
+    "Estroverso": handle_extrovert,
+    "Introverso": handle_introvert,
+    "Amichevole": handle_friendly,
+    "Scontroso": handle_unfriendly,
+    "Coscienzioso": hanlde_conscious,
+    "Impulsivo": handle_impulsive,
+    "Stabile": handle_stability,
+    "Instabile": handle_instability,
+    "Aperto di mente": handle_open,
+    "Chiuso di mente": handle_close
+}
+
+def dispatch_traits(traits):
+    function_to_execute = []
+
+    for trait in traits:
+        function = traits_function_map.get(trait)
+        if function: 
+            function_to_execute.append(function)
+
+
+
+def execute_functions(function_to_execute):
+    # Implement logic to execute functions in a pseudo-random order,
+    # maybe with threads.
+
 
 def ClientCreationSocket():
     # Crea il socket del client
