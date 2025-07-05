@@ -28,7 +28,7 @@ traits_function_map = {
     "Introverso": handle_introvert,
     "Amichevole": handle_friendly,
     "Scontroso": handle_unfriendly,
-    "Coscienzioso": hanlde_conscious,
+    "Coscienzioso": handle_conscious,
     "Impulsivo": handle_impulsive,
     "Stabile": handle_stability,
     "Instabile": handle_instability,
