@@ -1,60 +1,82 @@
 from furhat_remote_api import FurhatRemoteAPI
 
-# Create an instance of the FurhatRemoteAPI class, providing the address of the robot or the SDK running the virtual robot
+# Set the robot 
 furhat = FurhatRemoteAPI("localhost")
-
-# Get the voices on the robot
-voices = furhat.get_voices()
-
-# Set the voice of the robot
 furhat.set_voice(name='Matthew')
 
-# Say "Hi there!"
-furhat.say(text="Forza Napoli")
+#Define gesture based on personality 
 
-# Play an audio file (with lipsync automatically added) 
-furhat.say(url="https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav", lipsync=True)
-
-# Listen to user speech and return ASR result
-result = furhat.listen()
-
-# Perform a named gesture
-furhat.gesture(name="BrowRaise")
-
-# Perform a custom gesture
-furhat.gesture(body={
+#Extrovertion
+extrovert = {
+    "class": "furhat.gesture.Gesture",
     "frames": [
         {
-            "time": [
-                0.33
-            ],
-            "params": {
-                "BLINK_LEFT": 1.0
-            }
-        },
-        {
-            "time": [
-                0.67
-            ],
-            "params": {
-                "reset": True
-            }
+            "time": [0.0], "params": {"SMILE_OPEN": 1.0, "BROW_UP_LEFT": 0.7, "BROW_UP_RIGHT": 0.7}
         }
-    ],
-    "class": "furhatos.gestures.Gesture"
-    })
+    ]
+}
 
-# Get the users detected by the robot 
-users = furhat.get_users()
+introvert = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"SMILE_CLOSED": 1.0, "BROW_DOWN_LEFT": 0.7, "BROW_DOWN_RIGHT": 0.7}
+        }
+    ]
+}
 
-# Attend the user closest to the robot
-furhat.attend(user="CLOSEST")
+friendly = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"LOOK_RIGHT": 0.3}
+        }
+    ]
+}
 
-# Attend a user with a specific id
-furhat.attend(userid="virtual-user-1")
+unfriendly = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"LOOK_AWAY": 0.3}
+        }
+    ]
+}
 
-# Attend a specific location (x,y,z)
-furhat.attend(location="0.0,0.2,1.0")
+conscious = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"JAW_UP": 0.8}
+        }
+    ]
+}
 
-# Set the LED lights
-furhat.set_led(red=200, green=50, blue=50)
+impulsive = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"JAW_DROP": 0.8, "EYE_SQUINT_RIGHT": 0.5}
+        }
+    ]
+}
+
+def handle_extrovert(gesture):
+    furhat.gesture(body=extrovert)
+
+def handle_introvert(gesture):
+    furhat.gesture(body=introvert)
+
+def handle_friendly(gesture):
+    furhat.gesture(body=friendly)
+
+def handle_unfriendly(gesture):
+    furhat.gesture(body=unfriendly)
+
+def handle_conscious(gesture):
+    furhat.gesture(body=conscious)
+
+def handle_impulsive(gesture):
+    furhat.gesture(body=impulsive)
+
+

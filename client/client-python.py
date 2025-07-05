@@ -1,7 +1,11 @@
 import socket
 from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
+<<<<<<< HEAD
 from core.run_conversation import Run_conversation
+=======
+import json
+>>>>>>> 8266e7634c016a39e1dcdfcda09c694213b220d2
 
 
 BUFFER_SIZE = 4096
@@ -28,7 +32,7 @@ traits_function_map = {
     "Introverso": handle_introvert,
     "Amichevole": handle_friendly,
     "Scontroso": handle_unfriendly,
-    "Coscienzioso": hanlde_conscious,
+    "Coscienzioso": handle_conscious,
     "Impulsivo": handle_impulsive,
     "Stabile": handle_stability,
     "Instabile": handle_instability,
@@ -48,11 +52,18 @@ def dispatch_traits(traits):
 
 
 
+<<<<<<< HEAD
 async def execute_functions(furhat, function_to_execute):
     while True:
         random.shaffle(function_to_execute)
         for func in function_to_execute:
             await func(furhat)
+=======
+#def execute_functions(function_to_execute):
+    # Implement logic to execute functions in a pseudo-random order,
+    # maybe with threads.
+
+>>>>>>> 8266e7634c016a39e1dcdfcda09c694213b220d2
 
 def ClientCreationSocket():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
