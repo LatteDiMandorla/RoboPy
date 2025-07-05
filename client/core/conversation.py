@@ -1,6 +1,6 @@
 import asyncio
 from furhat_remote_api import FurhatRemoteAPI
-from openAI import ask_chatGPT
+from .openAI import ask_chatGPT
 
 async def run_conversation(furhat, prompt, traits):
     while True:

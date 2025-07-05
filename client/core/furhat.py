@@ -1,8 +1,31 @@
 from furhat_remote_api import FurhatRemoteAPI
+import asyncio
 
-# Set the robot 
-furhat = FurhatRemoteAPI("localhost")
-furhat.set_voice(name='Matthew')
+def LaunchFurhatRobot():
+    furhat = FurhatRemoteAPI("localhost")
+    furhat.set_voice(name='Matthew')
+
+    return furhat
+
+
+
+async def look(furhat):
+    try:
+        while True:
+            users = await asyncio.to_thread(lambda: furhat.get_users())
+            print(f"Utenti rilevati: {users}")
+
+            if users and len(users) > 0:
+                print(f"Guardo l'utente: {users[0]}")
+                furhat.attend(user=users[0])
+            else:
+                print("Nessun utente rilevato, non guardo nessuno")
+
+
+            await asyncio.sleep(2)
+    except Exception as e:
+        print("ERRORE in look():", e)
+    
 
 #Define gesture based on personality 
 

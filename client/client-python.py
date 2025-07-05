@@ -1,31 +1,81 @@
 import socket
+import random
+import asyncio
+from furhat_remote_api import FurhatRemoteAPI
 from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
-<<<<<<< HEAD
-from core.run_conversation import Run_conversation
-=======
+from core.conversation import run_conversation
+from core.furhat import LaunchFurhatRobot
+from core.furhat import look
 import json
->>>>>>> 8266e7634c016a39e1dcdfcda09c694213b220d2
 
+
+# JUST FOR TESTING
+
+def handle_extrovert(furhat):
+    print("Viene effettivamente eseguito")
+    furhat.gesture(name="BrowRaise")
+
+def handle_introvert(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_friendly(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_unfriendly(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_conscious(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_impulsive(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_stability(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_instability(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_open(furhat):
+    furhat.gesture(name="BrowRaise")
+
+def handle_close(furhat):
+    furhat.gesture(name="BrowRaise")
 
 BUFFER_SIZE = 4096
 SERVER_IP = "127.0.0.1"
-PORT = 8080
+PORT = 8081
 
-def receive_from_server(): 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((SERVER_IP, PORT))
-
-
-        response = s.recv(BUFFER_SIZE)
-        json_str = response.decode('utf-8')
-        data = json.loads(json_str)
-
-        prompt_base = data["prompt base"]
-        traits = data["personalità"]
-
-        return prompt_base, traits
-
+def send_and_receive_from_server(json_data):
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            print("Connessione al server...")
+            s.connect((SERVER_IP, PORT))
+            
+            print("Invio JSON al server...")
+            s.sendall(json_data.encode('utf-8'))
+            
+            print("Attendo risposta dal server...")
+            response = s.recv(BUFFER_SIZE)
+            json_str = response.decode('utf-8')
+            data = json.loads(json_str)
+            
+            prompt_base = data["prompt base"]
+            traits = data["personalità"]
+            
+            print("Risposta dal server ricevuta correttamente")
+            return prompt_base, traits
+            
+    except socket.error as e:
+        print(f"Errore di connessione: {e}")
+        return None, None
+    except json.JSONDecodeError as e:
+        print(f"Errore nel parsing JSON: {e}")
+        return None, None
+    except Exception as e:
+        print(f"Errore generico: {e}")
+        return None, None
 
 traits_function_map = {
     "Estroverso": handle_extrovert,
@@ -42,65 +92,46 @@ traits_function_map = {
 
 def dispatch_traits(traits):
     function_to_execute = []
-
     for trait in traits:
         function = traits_function_map.get(trait)
         if function: 
             function_to_execute.append(function)
-
     return function_to_execute
 
-
-
-<<<<<<< HEAD
 async def execute_functions(furhat, function_to_execute):
     while True:
-        random.shaffle(function_to_execute)
+        random.shuffle(function_to_execute)
         for func in function_to_execute:
-            await func(furhat)
-=======
-#def execute_functions(function_to_execute):
-    # Implement logic to execute functions in a pseudo-random order,
-    # maybe with threads.
-
->>>>>>> 8266e7634c016a39e1dcdfcda09c694213b220d2
-
-def ClientCreationSocket():
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    server_address = ('127.0.0.1', 8080)
-    client_socket.connect(server_address)
-
-    return client_socket
-
-def SendJsonToServer(json_data):
-    client_socket = ClientCreationSocket()
-
-    try:
-        client_socket.sendall(json_data.encode('utf-8'))
-
-        response = client_socket.recv(1024)
-        print("Risposta dal server:", response.decode('utf-8'))
-
-    finally:
-        client_socket.close()
-    
+            print(f"👉 Eseguo: {func.__name__}")
+            func(furhat)
+            await asyncio.sleep(2)  
 
 async def main():
-    risposte = chiedi_risposte()
-    mostra_risultati(risposte)
-    json_data = ConvertDictionaryToJson(risposte)
-    SendJsonToServer(json_data)
-    prompt_base, traits = receive_from_server()
-    function = dispatch_traits(traits)
+    furhat = LaunchFurhatRobot()
     
-    task1 = asyncio.create_task(execute_functions(furhat, function))
-    task2 = asyncio.create_task(run_conversation(furhat, prompt_base, traits))
-
+    task1 = asyncio.create_task(look(furhat))
+    
+    risposte = chiedi_risposte()
+    
+    mostra_risultati(risposte)
+    
+    json_data = ConvertDictionaryToJson(risposte)
+    
+    prompt_base, traits = send_and_receive_from_server(json_data)
+    
+    if prompt_base is None or traits is None:
+        print("The error comes from the server communication")
+        return
+    
+    print("Dati ricevuti dal server:", prompt_base, traits)
+    
+    function = dispatch_traits(traits)
+    task2 = asyncio.create_task(execute_functions(furhat, function))
+    
     await asyncio.gather(task1, task2)
 
-
-    
-    
 if __name__ == "__main__":
-   asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        print(e)
