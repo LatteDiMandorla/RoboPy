@@ -27,7 +27,7 @@ async def handle_extrovert(furhat):
         gesture = random.choice(EXTROVERT_GESTURES)
         furhat.gesture(name=gesture)
 
-        await asyncio.sleep(random.uniform(3,8))
+        await asyncio.sleep(random.uniform(3,15))
 
 
 async def handle_introvert(furhat):
@@ -35,4 +35,4 @@ async def handle_introvert(furhat):
         gesture = random.choice(INTROVERT_GESTURES)
         furhat.gesture(name=gesture)
 
-        await asyncio.sleep(random.uniform(3,8))
+        await asyncio.sleep(random.uniform(3,15))

@@ -1,6 +1,7 @@
 import socket
 from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
+from core.run_conversation import Run_conversation
 
 
 BUFFER_SIZE = 4096
@@ -47,17 +48,16 @@ def dispatch_traits(traits):
 
 
 
-def execute_functions(function_to_execute):
-    # Implement logic to execute functions in a pseudo-random order,
-    # maybe with threads.
-
+async def execute_functions(furhat, function_to_execute):
+    while True:
+        random.shaffle(function_to_execute)
+        for func in function_to_execute:
+            await func(furhat)
 
 def ClientCreationSocket():
-    # Crea il socket del client
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Connetti al server (indirizzo IP del server e porta)
-    server_address = ('127.0.0.1', 8080)  # localhost e porta 8080
+    server_address = ('127.0.0.1', 8080)
     client_socket.connect(server_address)
 
     return client_socket
@@ -66,24 +66,30 @@ def SendJsonToServer(json_data):
     client_socket = ClientCreationSocket()
 
     try:
-        # Invia un messaggio al server
         client_socket.sendall(json_data.encode('utf-8'))
 
-        # Ricevi la risposta dal server
         response = client_socket.recv(1024)
         print("Risposta dal server:", response.decode('utf-8'))
 
     finally:
-        # Chiudi la connessione
         client_socket.close()
     
 
-def main():
+async def main():
     risposte = chiedi_risposte()
     mostra_risultati(risposte)
     json_data = ConvertDictionaryToJson(risposte)
     SendJsonToServer(json_data)
     prompt_base, traits = receive_from_server()
+    function = dispatch_traits(traits)
+    
+    task1 = asyncio.create_task(execute_functions(furhat, function))
+    task2 = asyncio.create_task(run_conversation(furhat, prompt_base, traits))
+
+    await asyncio.gather(task1, task2)
+
+
+    
     
 if __name__ == "__main__":
-    main()
+   asyncio.run(main())
