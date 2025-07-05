@@ -1,6 +1,7 @@
 import socket
 from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
+import json
 
 
 BUFFER_SIZE = 4096
@@ -47,7 +48,7 @@ def dispatch_traits(traits):
 
 
 
-def execute_functions(function_to_execute):
+#def execute_functions(function_to_execute):
     # Implement logic to execute functions in a pseudo-random order,
     # maybe with threads.
 
