@@ -1,31 +1,31 @@
 from furhat_remote_api import FurhatRemoteAPI
 import asyncio
+import cv2
+from .speech_to_text import *
+
 
 def LaunchFurhatRobot():
     furhat = FurhatRemoteAPI("localhost")
-    furhat.set_voice(name='Matthew')
-
+    furhat.set_voice(name='Adriano-Neural')
+    furhat.say(text="Ciao! Mi sono attivato correttamente")
     return furhat
 
 
 
 async def look(furhat):
+    
     try:
         while True:
-            users = await asyncio.to_thread(lambda: furhat.get_users())
-            print(f"Utenti rilevati: {users}")
-
-            if users and len(users) > 0:
-                print(f"Guardo l'utente: {users[0]}")
-                furhat.attend(user=users[0])
-            else:
-                print("Nessun utente rilevato, non guardo nessuno")
+            
+            users = furhat.get_users()
 
 
-            await asyncio.sleep(2)
+            await asyncio.sleep(20)
     except Exception as e:
         print("ERRORE in look():", e)
+
     
+
 
 #Define gesture based on personality 
 

@@ -7,12 +7,11 @@
 #include <stdbool.h>
 #include "personality_picker.h"
 
-#define PORT 8080
+#define PORT 8081
 #define BUFFER_SIZE 4096
 int server_socket;
 
 
-bool personality_checked = false;
 
 int main() {
 
@@ -82,18 +81,15 @@ int main() {
           buffer[recv_status] = '\0';
           printf("Messaggio ricevuto da %s: %s\n", client_ip, buffer);
           
-          if ( personality_checked == false ) {
             char * response = parse_jSON(buffer);
             if (response != NULL) {
               send(client_socket, response, strlen(response), 0);
               free(response);
-              personality_checked = true;
             }
             else {
               const char  * error_msg = "{\"error\": \"Parsing fallito\"}";
               send(client_socket, error_msg, strlen(error_msg), 0);
             }
-          }
        }
 
        close(client_socket);

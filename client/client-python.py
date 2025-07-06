@@ -8,40 +8,9 @@ from core.conversation import run_conversation
 from core.furhat import LaunchFurhatRobot
 from core.furhat import look
 import json
+from core.handle import *
 
 
-# JUST FOR TESTING
-
-def handle_extrovert(furhat):
-    print("Viene effettivamente eseguito")
-    furhat.gesture(name="BrowRaise")
-
-def handle_introvert(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_friendly(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_unfriendly(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_conscious(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_impulsive(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_stability(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_instability(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_open(furhat):
-    furhat.gesture(name="BrowRaise")
-
-def handle_close(furhat):
-    furhat.gesture(name="BrowRaise")
 
 BUFFER_SIZE = 4096
 SERVER_IP = "127.0.0.1"
@@ -77,36 +46,9 @@ def send_and_receive_from_server(json_data):
         print(f"Errore generico: {e}")
         return None, None
 
-traits_function_map = {
-    "Estroverso": handle_extrovert,
-    "Introverso": handle_introvert,
-    "Amichevole": handle_friendly,
-    "Scontroso": handle_unfriendly,
-    "Coscienzioso": handle_conscious,
-    "Impulsivo": handle_impulsive,
-    "Stabile": handle_stability,
-    "Instabile": handle_instability,
-    "Aperto di mente": handle_open,
-    "Chiuso di mente": handle_close
-}
-
-def dispatch_traits(traits):
-    function_to_execute = []
-    for trait in traits:
-        function = traits_function_map.get(trait)
-        if function: 
-            function_to_execute.append(function)
-    return function_to_execute
-
-async def execute_functions(furhat, function_to_execute):
-    while True:
-        random.shuffle(function_to_execute)
-        for func in function_to_execute:
-            print(f"👉 Eseguo: {func.__name__}")
-            func(furhat)
-            await asyncio.sleep(2)  
 
 async def main():
+
     furhat = LaunchFurhatRobot()
     
     task1 = asyncio.create_task(look(furhat))
@@ -120,13 +62,14 @@ async def main():
     prompt_base, traits = send_and_receive_from_server(json_data)
     
     if prompt_base is None or traits is None:
-        print("The error comes from the server communication")
+        print(" Errore nella comunicazione con il server")
         return
     
     print("Dati ricevuti dal server:", prompt_base, traits)
     
     function = dispatch_traits(traits)
     task2 = asyncio.create_task(execute_functions(furhat, function))
+    run_conversation(furhat, prompt_base, traits)
     
     await asyncio.gather(task1, task2)
 

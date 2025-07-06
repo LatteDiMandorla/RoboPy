@@ -1,21 +1,23 @@
 import asyncio
 from furhat_remote_api import FurhatRemoteAPI
 from .openAI import ask_chatGPT
+from .speech_to_text import *
+import sys
 
-async def run_conversation(furhat, prompt, traits):
+def run_conversation(furhat, prompt, traits):
+    furhat.say(text="Di che cosa vuoi parlare?")
     while True:
-        listen_task = asyncio.create_task(furhat.listen())
-        user_utterance = await listen_task
+        user_utterance = transcribe_audio()
 
         if user_utterance.strip().lower() == "arrivederci":
-            await furhat.say("Arrivederci! A presto!")
-            break
+            furhat.say(text="Arrivederci! A presto!")
+            sys.exit(0)
 
         # Just for test
         print(f"Utente ha detto: {user_utterance}")
 
         response = ask_chatGPT(prompt, traits, user_utterance)
-        await furhat.say(response)
+        furhat.say(text=response)
 
 
 
