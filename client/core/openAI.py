@@ -1,13 +1,17 @@
 import openai
 from openai import OpenAI
+from groq import Groq
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
+client = Groq(
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    api_key=os.environ.get("GROQ_API_KEY"),
+
+)
 
 def ask_chatGPT(prompt, traits, user_message):
     full_prompt = "\n".join([prompt] + [f"- {trait}" for trait in traits])
@@ -17,10 +21,9 @@ def ask_chatGPT(prompt, traits, user_message):
         {"role": "user", "content": user_message}
     ]
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+    chat_completion = client.chat.completions.create(
         messages=messages,
-        temperature=0.8
+        model="llama3-70b-8192",  
     )
 
-    return response.choices[0].message.content
+    return chat_completion.choices[0].message.content
