@@ -3,16 +3,16 @@
 </p>
 
 <p align="center">
-  RoboPy è un software client-server
+RoboPY è un software client-server che consente l'interazione vocale con il robot Furhat utilizzando l'SDK ufficiale.
 </p>
 
 ---
 
 ## Sommario
 
-- [✨ Caratteristiche](#-caratteristiche)
-- [🚀 Installazione](#-installazione)
-- [⚙️ Utilizzo](#️-utilizzo)
+- [✨ Caratteristiche](#-Caratteristiche)
+- [🚀 Installazione](#-Installazione)
+- [⚙️ Utilizzo](#️-uUilizzo)
 - [🧠 Tecnologie usate](#-tecnologie-usate)
 - [📂 Struttura del progetto](#-struttura-del-progetto)
 - [📢 Contribuire](#-contribuire)
