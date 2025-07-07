@@ -54,8 +54,6 @@ async def main():
     
     task1 = asyncio.create_task(look(furhat))
     
-    risposte = chiedi_risposte(furhat)
-    
     mostra_risultati(risposte)
     
     json_data = ConvertDictionaryToJson(risposte)

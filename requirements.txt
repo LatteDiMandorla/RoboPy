@@ -1,0 +1,7 @@
+whisper
+sounddevice
+scipy
+noisereduce
+numpy
+soundfile
+furhat-remote-api

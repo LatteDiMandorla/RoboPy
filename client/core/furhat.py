@@ -19,7 +19,7 @@ def LaunchFurhatRobot():
     
     time.sleep(11 * 0.4)
     while True:
-        answer = transcribe_audio()
+        answer = transcribe_audio_whisper()
 
         if answer.strip().lower() == "":
             continue
@@ -53,8 +53,10 @@ def chiedi_risposte(furhat):
     for domanda in domande:
         furhat.say(text=domanda)
 
+        time.sleep(8 * 0.4)
+
         while True:
-            risposta = transcribe_audio().strip().lower()
+            risposta = transcribe_audio_whisper().strip().lower()
             print(f"Risposta trascritta: '{risposta}'")  
 
             if risposta.strip().lower == "":

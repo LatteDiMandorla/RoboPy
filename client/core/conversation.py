@@ -8,7 +8,7 @@ import sys
 def run_conversation(furhat, prompt, traits):
     furhat.say(text="Di che cosa vuoi parlare?")
     while True:
-        user_utterance = transcribe_audio()
+        user_utterance = transcribe_audio_whisper()
         
         if user_utterance == "":
             continue
