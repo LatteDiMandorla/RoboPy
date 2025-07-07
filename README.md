@@ -1,31 +1,51 @@
+
 <p align="center">
   <img src="assets/icon.png" width="300"/>
 </p>
 
-<p align="center">
-RoboPY è un software client-server che consente l'interazione vocale con il robot Furhat utilizzando l'SDK ufficiale.
+<p align="left">
+RoboPY è un sistema distribuito basato su un’architettura client-server, progettato per consentire l’interazione naturale tra un utente e un robot sociale, con l’obiettivo di stimare in tempo reale alcuni tratti della personalità dell’interlocutore.
+
+Il client funge da intermediario tra l’essere umano e Furhat, un robot conversazionale dotato di espressività facciale e vocale. Il robot guida l’utente attraverso un breve questionario di personalità, formulando domande ispirate al modello **TIPI** (__Ten Item Personality Inventory__), volto a valutare i cinque tratti principali della personalità.
 </p>
 
----
 
 ## Sommario
-
-- [✨ Caratteristiche](#-Caratteristiche)
-- [🚀 Installazione](#-Installazione)
-- [⚙️ Utilizzo](#️-uUilizzo)
-- [🧠 Tecnologie usate](#-tecnologie-usate)
-- [📂 Struttura del progetto](#-struttura-del-progetto)
-- [📢 Contribuire](#-contribuire)
-- [📃 Licenza](#-licenza)
-
----
-
-## Caratteristiche
+<p align="center"><a href="#built-with">Built With</a> - <a href="#getting-started">Getting Starded</a> - <a href="#prerequisites">Prerequisites</a> - <a href="#installation">Installation</a> - <a href="#docker">Docker</a> - <a href="#authors">Authors</a></p>
 
 
----
+## Built With
 
-## Installazione
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)  [![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
 
-```bash
-pip install -r requirements.txt
+
+
+## Getting Started
+Per eseguire localmente questo software è necessario seguire queste istruzioni.
+
+### Prerequisites
+
+È necessario installare le librerie `cjson` e `curl` per far funzionare il server.
+
+### Installation
+
+1. Crea una API key qui [https://console.groq.com/keys](https://console.groq.com/keys)
+2. Clona la repository
+   ```sh
+   git clone https://github.com/LatteDiMandorla/RoboPy.git
+   ```
+3. Installa le dipendenze per il Client
+   ```sh
+   pip install requirements.txt
+   ```
+4. Crea un file `.env` ed inserisci al suo interno
+   ```sh
+   GROQ_API_KEY=<your-key>
+   ```
+## DOCKER
+
+
+## AUTHORS
+- [@Sderrr](https://github.com/Sderr12)
+- [@LatteDiMandorla](https://github.com/LatteDiMandorla)
+
