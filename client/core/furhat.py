@@ -1,6 +1,5 @@
 from furhat_remote_api import FurhatRemoteAPI
 import asyncio
-import cv2
 from .speech_to_text import *
 import sys
 import time
