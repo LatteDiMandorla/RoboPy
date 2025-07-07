@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 
-const char * prompt = "Rispondi solo contestualmente alla conversazione dell'utente, tenendo in conto che l'utente è:\n";
+const char * prompt = "Ti chiami RoboPY. Rispondi solo contestualmente alla conversazione dell'utente. Rispondi brevemente, tenendo in conto che l'utente è:\n";
 
 /* Parsing the jSON file sent by the client, in order to 
  * decide which personality has the user, and behave conseguentally. */ 

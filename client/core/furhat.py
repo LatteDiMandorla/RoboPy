@@ -2,14 +2,75 @@ from furhat_remote_api import FurhatRemoteAPI
 import asyncio
 import cv2
 from .speech_to_text import *
+import sys
+import time
+
+
+parole_numeri = {
+    "uno": 1, "due": 2, "tre": 3, "quattro": 4,
+    "cinque": 5, "sei": 6, "sette": 7
+}
 
 
 def LaunchFurhatRobot():
     furhat = FurhatRemoteAPI("localhost")
     furhat.set_voice(name='Adriano-Neural')
-    furhat.say(text="Ciao! Mi sono attivato correttamente")
-    return furhat
+    furhat.say(text="Ciao, sono RoboPAI. Posso porti qualche semplice domanda per conoscerci meglio?")
+    
+    time.sleep(11 * 0.4)
+    while True:
+        answer = transcribe_audio()
 
+        if answer.strip().lower() == "":
+            continue
+
+        if answer.strip().lower() == "sì":
+            risposte = chiedi_risposte(furhat)
+            return furhat, risposte
+
+        if answer.strip().lower() == "no":
+            furhat.say(text="Va bene, torna quando sarai pronto!")
+            sys.exit(0)
+
+
+def chiedi_risposte(furhat):
+    domande = [
+        "1. Ti consideri estroverso?",
+        "2. Ti consideri critico, polemico?",
+        "3. Ti consideri affidabile?",
+        "4. Ti consideri ansioso?",
+        "5. Sei aperto a nuove esperienze?",
+        "6. Ti consideri riservato?",
+        "7. Ti consideri simpatico?",
+        "8. Ti consideri disorganizzato?",
+        "9. Ti consideri calmo?",
+        "10. Ti consideri poco creativo?"
+    ]
+
+    risposte = []
+    furhat.say(text="Perfetto, ti propongo una serie di domande, dovrai rispondere fornendo un numero compreso tra 2 e 7.")
+    for domanda in domande:
+        furhat.say(text=domanda)
+
+        while True:
+            risposta = transcribe_audio().strip().lower()
+            print(f"Risposta trascritta: '{risposta}'")  
+
+            try:
+                if risposta in parole_numeri:
+                    numero = parole_numeri[risposta]
+                else:
+                    numero = int(risposta)
+
+                if 2 <= numero <= 7:
+                    risposte.append(numero)
+                    break
+                else:
+                    furhat.say(text="La risposta deve essere un numero da due a sette.")
+            except ValueError:
+                furhat.say(text="Non ho capito. Puoi dirmi un numero valido?")
+    
+    return risposte
 
 
 async def look(furhat):
@@ -18,6 +79,9 @@ async def look(furhat):
         while True:
             
             users = furhat.get_users()
+
+            if users and len(users)>0:
+                furhat.attend("CLOSEST")
 
 
             await asyncio.sleep(20)

@@ -9,10 +9,15 @@ def run_conversation(furhat, prompt, traits):
     furhat.say(text="Di che cosa vuoi parlare?")
     while True:
         user_utterance = transcribe_audio()
+        
+        if user_utterance == "":
+            continue
 
         if user_utterance.strip().lower() == "arrivederci":
             furhat.say(text="Arrivederci! A presto!")
             sys.exit(0)
+
+
 
         # Just for test
         print(f"Utente ha detto: {user_utterance}")

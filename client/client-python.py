@@ -3,10 +3,11 @@ import random
 import asyncio
 from furhat_remote_api import FurhatRemoteAPI
 from core.CalcoloTipi import ConvertDictionaryToJson
-from core.InputUtenteTipi import chiedi_risposte, mostra_risultati
+from core.InputUtenteTipi import mostra_risultati
 from core.conversation import run_conversation
 from core.furhat import LaunchFurhatRobot
 from core.furhat import look
+from core.furhat import chiedi_risposte
 import json
 from core.handle import *
 
@@ -49,11 +50,11 @@ def send_and_receive_from_server(json_data):
 
 async def main():
 
-    furhat = LaunchFurhatRobot()
+    furhat, risposte = LaunchFurhatRobot()
     
     task1 = asyncio.create_task(look(furhat))
     
-    risposte = chiedi_risposte()
+    risposte = chiedi_risposte(furhat)
     
     mostra_risultati(risposte)
     
