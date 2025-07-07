@@ -1,4 +1,5 @@
 import asyncio
+import time
 from furhat_remote_api import FurhatRemoteAPI
 from .openAI import ask_chatGPT
 from .speech_to_text import *
@@ -19,11 +20,14 @@ def run_conversation(furhat, prompt, traits):
         response = ask_chatGPT(prompt, traits, user_utterance)
         furhat.say(text=response)
 
+        # Pause the function based on the estimated speaking time
+        time.sleep(len(response.split()) * 0.4)
+
 
 
 if __name__ == "__main__":
-    furhat = FurhatRemoteAPI("")  
+    furhat = FurhatRemoteAPI("localhost")  
     prompt = "Sei un assistente virtuale gentile e disponibile."
     traits = "Estroverso"
 
-    asyncio.run(run_conversation(furhat, prompt, traits))
+    run_conversation(furhat, prompt, traits)
