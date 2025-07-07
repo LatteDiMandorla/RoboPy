@@ -49,12 +49,16 @@ def chiedi_risposte(furhat):
 
     risposte = []
     furhat.say(text="Perfetto, ti propongo una serie di domande, dovrai rispondere fornendo un numero compreso tra 2 e 7.")
+    time.sleep(17 * 0.4)
     for domanda in domande:
         furhat.say(text=domanda)
 
         while True:
             risposta = transcribe_audio().strip().lower()
             print(f"Risposta trascritta: '{risposta}'")  
+
+            if risposta.strip().lower == "":
+                continue
 
             try:
                 if risposta in parole_numeri:
@@ -69,6 +73,7 @@ def chiedi_risposte(furhat):
                     furhat.say(text="La risposta deve essere un numero da due a sette.")
             except ValueError:
                 furhat.say(text="Non ho capito. Puoi dirmi un numero valido?")
+                time.sleep(8 * 0.4)
     
     return risposte
 
