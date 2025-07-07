@@ -4,9 +4,11 @@ import speech_recognition as sr
 
 def transcribe_audio():
     recognizer = sr.Recognizer()
+    recognizer.energy_threshold = 300
+    recognizer.pause_threshold = 1.0
     with sr.Microphone() as source:
         print("In ascolto...")
-        recognizer.adjust_for_ambient_noise(source, duration=0.5)  
+        recognizer.adjust_for_ambient_noise(source, duration=1.0)  
         audio = recognizer.listen(source)
 
     try:
