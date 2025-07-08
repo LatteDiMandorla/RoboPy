@@ -2,5 +2,7 @@ FROM python:3.13.5-slim-bullseye
 
 WORKDIR /app
 COPY client/ /app
+RUN apt-get update && apt-get install -y portaudio19-dev
+
 RUN pip install --no-cache-dir -r requirements.txt
 CMD ["python", "client-python.py"]
