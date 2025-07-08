@@ -42,6 +42,16 @@ Per eseguire localmente questo software è necessario seguire queste istruzioni.
    ```sh
    GROQ_API_KEY=<your-key>
    ```
+5. Spostati nella cartella server/src ed esegui il seguente comando
+   ```sh
+   make
+   ./server
+   ```
+6. Avvia SDK Furhat e attiva la skill ```Remote API```
+7. Spostati nella cartella client ed esegui il seguente comando
+   ```sh
+   python3 client-python.py
+   ``` 
 ## DOCKER
 Il progetto è composto da due componenti principali: server (scritto in C) e client (in Python). Entrambi possono essere eseguiti in ambienti isolati tramite Docker.
 
