@@ -5,3 +5,7 @@ noisereduce
 numpy
 soundfile
 furhat-remote-api
+openai
+groq
+python-dotenv
+speechrecognition

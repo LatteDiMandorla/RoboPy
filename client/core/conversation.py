@@ -1,7 +1,6 @@
-import asyncio
 import time
 from furhat_remote_api import FurhatRemoteAPI
-from .openAI import ask_chatGPT
+from .groqAi import ask_chatGPT
 from .speech_to_text import *
 import sys
 
