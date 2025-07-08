@@ -25,6 +25,9 @@ services:
     networks:
       - robopy_net
 
+    stdin_open: true
+    tty: true
+
 networks:
   robopy_net:
     driver: bridge
