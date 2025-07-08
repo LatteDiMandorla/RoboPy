@@ -3,16 +3,18 @@ import asyncio
 from .speech_to_text import *
 import sys
 import time
-
+import os
 
 parole_numeri = {
     "uno": 1, "due": 2, "tre": 3, "quattro": 4,
     "cinque": 5, "sei": 6, "sette": 7
 }
 
+ 
+furhat_host = os.getenv("FURHAT_HOST", "localhost")
 
 def LaunchFurhatRobot():
-    furhat = FurhatRemoteAPI("localhost")
+    furhat = FurhatRemoteAPI(furhat_host)
     furhat.set_voice(name='Adriano-Neural')
     furhat.say(text="Ciao, sono RoboPAI. Posso porti qualche semplice domanda per conoscerci meglio?")
     
