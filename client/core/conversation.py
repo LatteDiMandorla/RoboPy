@@ -1,6 +1,6 @@
 import time
 from furhat_remote_api import FurhatRemoteAPI
-from .groqAi import ask_chatGPT
+from .groqAi import ask_chatGROQ
 from .speech_to_text import *
 import sys
 
@@ -22,7 +22,7 @@ def run_conversation(furhat, prompt, traits):
         # Just for test
         print(f"Utente ha detto: {user_utterance}")
 
-        response = ask_chatGPT(prompt, traits, user_utterance)
+        response = ask_chatGROQ(prompt, traits, user_utterance)
         furhat.say(text=response)
 
         # Pause the function based on the estimated speaking time
