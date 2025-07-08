@@ -1,5 +1,3 @@
-import openai
-from openai import OpenAI
 from groq import Groq
 import os
 from dotenv import load_dotenv
@@ -13,7 +11,7 @@ client = Groq(
 
 )
 
-def ask_chatGPT(prompt, traits, user_message):
+def ask_chatGROQ(prompt, traits, user_message):
     full_prompt = "\n".join([prompt] + [f"- {trait}" for trait in traits])
 
     messages = [

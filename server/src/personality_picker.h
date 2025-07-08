@@ -3,7 +3,8 @@
 
 #include <cjson/cJSON.h>
 
-void create_prompt(const char * text);
+
+
 
 char * parse_jSON(const char * buffer);
 

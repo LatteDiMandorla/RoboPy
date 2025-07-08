@@ -2,28 +2,6 @@ import asyncio
 import random
 
 
-
-EXTROVERT_GESTURES = [
-    "BigSmile",
-    "Nod",
-    "Wink",
-    "Frown",
-    "Shrug",
-    "RollEyes"
-]
-
-
-INTROVERT_GESTURES = [
-    "Nod",
-    "SmallSmile",
-    "Blink",
-    "Shrug",
-    "HeadShake"
-]
-
-
-
-
 def dispatch_traits(traits):
     function_to_execute = []
     for trait in traits:
@@ -42,47 +20,123 @@ async def execute_functions(furhat, function_to_execute):
 
 
 
-async def handle_extrovert(furhat):
-    while True:
-        gesture = random.choice(EXTROVERT_GESTURES)
-        furhat.gesture(name=gesture)
-
-        await asyncio.sleep(random.uniform(3,15))
 
 
-async def handle_introvert(furhat):
-    while True:
-        gesture = random.choice(INTROVERT_GESTURES)
-        furhat.gesture(name=gesture)
+extrovert = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"SMILE_OPEN": 1.0, "BROW_UP_LEFT": 0.7, "BROW_UP_RIGHT": 0.7}
+        }
+    ]
+}
 
-        await asyncio.sleep(random.uniform(3,15))
+introvert = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"SMILE_CLOSED": 1.0, "BROW_DOWN_LEFT": 0.7, "BROW_DOWN_RIGHT": 0.7}
+        }
+    ]
+}
 
+friendly = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"LOOK_RIGHT": 0.3}
+        }
+    ]
+}
 
-async def handle_friendly(furhat):
-    print("Prova")
+unfriendly = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"LOOK_AWAY": 0.3}
+        }
+    ]
+}
 
+conscious = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"JAW_UP": 0.8}
+        }
+    ]
+}
 
-async def handle_unfriendly(furhat):
-    furhat.gesture(name="BrowRaise")
+impulsive = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0], "params": {"JAW_DROP": 0.8, "EYE_SQUINT_RIGHT": 0.5}
+        }
+    ]
+}
 
-async def handle_conscious(furhat):
-    furhat.gesture(name="BrowRaise")
+stability = {
+    "class": "furhat.gesture.Gesture",
+    "frames": [
+        {
+            "time": [0.0],
+            "params": {
+                "NECK_TILT": 0.0,
+                "SMILE": 0.2,
+                "EYEBROW_UP": 0.1
+            }
+        },
+        {
+            "time": [1.5],
+            "params": {
+                "NECK_TILT": 0.05,
+                "SMILE": 0.3,
+                "EYEBROW_UP": 0.0
+            }
+        }
+    ]
+}
 
-async def handle_impulsive(furhat):
-    furhat.gesture(name="BrowRaise")
+def handle_extrovert(furhat):
+    furhat.gesture(body=extrovert)
 
-async def handle_stability(furhat):
-    furhat.gesture(name="BrowRaise")
+def handle_introvert(furhat):
+    furhat.gesture(body=introvert)
 
-async def handle_instability(furhat):
-    furhat.gesture(name="BrowRaise")
+def handle_friendly(furhat):
+    furhat.gesture(body=friendly)
 
-async def handle_open(furhat):
-    furhat.gesture(name="BrowRaise")
+def handle_unfriendly(furhat):
+    furhat.gesture(body=unfriendly)
 
-async def handle_close(furhat):
-    furhat.gesture(name="BrowRaise")
+def handle_conscious(furhat):
+    furhat.gesture(body=conscious)
 
+def handle_impulsive(furhat):
+    furhat.gesture(body=impulsive)
+
+def handle_stability(furhat):
+    furhat.gesture(body=stability)
+
+def handle_instability(furhat):
+    random_number = random.randint(1,7)
+
+    match random_number:
+        case 1:
+            handle_friendly(furhat)
+        case 2:
+            handle_unfriendly(furhat)
+        case 3:
+            handle_extrovert(furhat)
+        case 4:
+            handle_introvert(furhat)
+        case 5:
+            handle_conscious(furhat)
+        case 6:
+            handle_impulsive(furhat)
+        case 7:
+            handle_stability(furhat)
 
 
 
@@ -96,6 +150,7 @@ traits_function_map = {
     "Impulsivo": handle_impulsive,
     "Stabile": handle_stability,
     "Instabile": handle_instability,
-    "Aperto di mente": handle_open,
-    "Chiuso di mente": handle_close
 }
+
+
+
