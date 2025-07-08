@@ -43,8 +43,30 @@ Per eseguire localmente questo software è necessario seguire queste istruzioni.
    GROQ_API_KEY=<your-key>
    ```
 ## DOCKER
+Il progetto è composto da due componenti principali: server (scritto in C) e client (in Python). Entrambi possono essere eseguiti in ambienti isolati tramite Docker.
 
+### Prerequisites
+- Docker (oppure Podman);
+- ```docker-compose``` (non obbligatorio, ma consigliato).
 
+### Avvio rapido
+Dopo aver clonato la repository e inserito la API key:
+1. Costruisci le immagini Docker 
+  ```sh
+   docker build -t lso-server ./server
+   docker build -t robopy-client ./client
+   ```
+2. Avvia entrambi i container
+  ```sh
+  docker run -d -p 9999:9999 --name running-lso-server lso-server
+  docker run -it --rm --name robopy-client --env SERVER_ADDRESS=host.docker.internal robopy-client
+  ```
+
+### Avvio con docker-compose
+Puoi usare anche docker-compose per semplificare tutto:
+```sh
+docker-compose up --build
+```
 ## AUTHORS
 - [@Sderrr](https://github.com/Sderr12)
 - [@LatteDiMandorla](https://github.com/LatteDiMandorla)
