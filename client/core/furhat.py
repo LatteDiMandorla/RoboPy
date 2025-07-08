@@ -154,22 +154,22 @@ impulsive = {
     ]
 }
 
-def handle_extrovert(gesture):
+def handle_extrovert(furhat):
     furhat.gesture(body=extrovert)
 
-def handle_introvert(gesture):
+def handle_introvert(furhat):
     furhat.gesture(body=introvert)
 
-def handle_friendly(gesture):
+def handle_friendly(furhat):
     furhat.gesture(body=friendly)
 
-def handle_unfriendly(gesture):
+def handle_unfriendly(furhat):
     furhat.gesture(body=unfriendly)
 
-def handle_conscious(gesture):
+def handle_conscious(furhat):
     furhat.gesture(body=conscious)
 
-def handle_impulsive(gesture):
+def handle_impulsive(furhat):
     furhat.gesture(body=impulsive)
 
 
