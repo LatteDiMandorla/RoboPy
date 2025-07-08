@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: Server_robopy
+    ports:
+      - "8081:8081"
+  
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: Client_robopy
+    depends_on:
+      - server
+    environment:
+      - SERVER_HOST=server
+      - SERVER_PORT=8081
+
