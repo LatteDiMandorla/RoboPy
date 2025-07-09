@@ -2,13 +2,26 @@ FROM python:3.13.5-slim-bullseye
 
 WORKDIR /app
 
-
 RUN apt-get update && \
-    apt-get install -y libportaudio2 libportaudiocpp0 ffmpeg && \
+    apt-get install -y libportaudio2 libportaudiocpp0 ffmpeg portaudio19-dev alsa-utils && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY client/ /app
-RUN apt-get update && apt-get install -y portaudio19-dev
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Imposta una configurazione ALSA di default
+RUN echo 'pcm.!default { type hw; card 0; }' > /etc/asound.conf && \
+    echo 'ctl.!default { type hw; card 0; }' >> /etc/asound.conf
+
+
+RUN mkdir -p /tmp/.cache && \
+    chmod 777 /tmp/.cache && \
+    mkdir -p /app/.cache && \
+    chmod 777 /app/.cache
+
+ENV HOME=/tmp
+ENV XDG_CACHE_HOME=/tmp/.cache
+
+
 CMD ["python", "client-python.py"]

@@ -1,8 +1,9 @@
 import socket
 import json
+import os
 
-SERVER_IP = "127.0.0.1"       
-PORT = 12345                  
+SERVER_IP = os.getenv("SERVER_HOST", "server")
+PORT = int(os.getenv("SERVER_PORT", 8081))
 BUFFER_SIZE = 4096            
 
 def send_and_receive_from_server(json_data):

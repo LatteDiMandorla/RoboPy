@@ -11,16 +11,12 @@ from core.furhat import chiedi_risposte
 import json
 from core.utils import send_and_receive_from_server
 from core.handle import *
-
-
-
-BUFFER_SIZE = 4096
-SERVER_IP = "127.0.0.1"
-PORT = 8081
+import sounddevice as sd
 
 
 
 async def main():
+
 
     furhat, risposte = LaunchFurhatRobot()
     
