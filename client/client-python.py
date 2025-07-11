@@ -1,6 +1,7 @@
 import socket
 import random
 import asyncio
+from core.handle import *
 from furhat_remote_api import FurhatRemoteAPI
 from core.CalcoloTipi import ConvertDictionaryToJson
 from core.InputUtenteTipi import mostra_risultati
@@ -20,7 +21,7 @@ async def main():
 
     furhat, risposte = LaunchFurhatRobot()
     
-    task1 = asyncio.create_task(look(furhat))
+    task = look(furhat)
     
     mostra_risultati(risposte)
     
@@ -38,7 +39,6 @@ async def main():
     task2 = asyncio.create_task(execute_functions(furhat, function))
     run_conversation(furhat, prompt_base, traits)
     
-    await asyncio.gather(task1, task2)
 
 if __name__ == "__main__":
     try:

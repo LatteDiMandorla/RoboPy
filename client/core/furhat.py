@@ -22,7 +22,7 @@ def LaunchFurhatRobot():
     while True:
         answer = transcribe_audio_whisper()
 
-        if answer.strip().lower() == "":
+        if answer.strip().lower() == "" or answer.lower() == "sottotitoli e revisione a cura di qtss":
             continue
 
         if answer.strip().lower() == "sì":
@@ -57,10 +57,11 @@ def chiedi_risposte(furhat):
         time.sleep(8 * 0.4)
 
         while True:
-            risposta = transcribe_audio_whisper().strip().lower()
-            print(f"Risposta trascritta: '{risposta}'")  
 
-            if risposta.strip().lower == "":
+            input("premi per parlare")
+            risposta = transcribe_audio_whisper().strip().lower()
+
+            if risposta.lower() == "" or risposta.lower() == "sottotitoli e revisione a cura di qtss":
                 continue
 
             try:
